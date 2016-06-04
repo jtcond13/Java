@@ -1,21 +1,20 @@
 import java.io.*;
 import java.net.*;
-import java.util.Scanner;
+import java.util.*;
 
 class Sort {
   public static void main(String[] args) {
     Scanner scan = new Scanner(System.in);
     String sort_type = get_sort(scan);
     System.out.println("You chose " + sort_type + " Sort");
-    String data_type = get_data(scan);
-    System.out.println("Generating a " + data_type + " data file");
+    System.out.println("Generating data files");
     try {
-      File data_file = generate_data(data_type);
+      File data_file = generate_data();
     }
     catch (IOException j) {
       j.printStackTrace();
     }
-
+    
 
   }
 
@@ -32,13 +31,33 @@ class Sort {
     return data;
   }
 
-  public static File generate_data(String datatype) throws IOException{
-    File file = new File(String.format("%sdata_file.txt", datatype));
+  public static File generate_data() throws IOException{
+    File file = new File(String.format("best_case.txt"));
     file.createNewFile();
     FileWriter filenes = new FileWriter(file);
-    filenes.write("1\n2\n3\n");
+    for (int i=1; i <= 2000; i++) {
+      filenes.write(i + "\n");
+    }
     filenes.flush();
     filenes.close();
+    File average = new File(String.format("average_case.txt"));
+    average.createNewFile();
+    FileWriter filene = new FileWriter(average);
+    Random rn = new Random();
+    for (int i=1; i <= 2000; i++) {
+      int num = rn.nextInt((2000 - 1) + 1) + 1;
+      filene.write(num + "\n");
+    }
+    filene.flush();
+    filene.close();
+    File worst = new File(String.format("worst_case.txt"));
+    worst.createNewFile();
+    FileWriter writer = new FileWriter(worst);
+    for (int i=2000; i > 0; i--) {
+      writer.write(i + "\n");
+    }
+    writer.flush();
+    writer.close();
     return file;
   }
 
