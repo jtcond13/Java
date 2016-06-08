@@ -2,8 +2,8 @@ Homework #1: Comp 500
 
 Problem #1:
 
-As the inner loop executes N times and the outer loop executes N-4 times, the overall efficiency is O(N).  Given that the code in the elippises takes
-a combined 2.004 milliseconds , the entire code would take 2004 milliseconds.
+As the inner loop executes N times and the outer loop executes N/2 times, the overall efficiency is O(NlogN).  Given that the code in the elippises takes
+a combined 2.004 milliseconds , the running time is 43950 milliseconds.
 
 
 
@@ -12,12 +12,12 @@ Code is included.
 
 Bubble Sort:
 	Best Case
-	Comparisons: 1999000
+	Comparisons: 0
 	Exchanges: 0
 	
 	Average Case
-	Comparisons: 1999000
-	Exchanges: 740659
+	Comparisons: 1016527
+	Exchanges: 1016527
 	
 	Worst Case
 	Comparisons: 1999000
