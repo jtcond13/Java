@@ -5,7 +5,7 @@ import java.util.*;
 
 class sort {
 	public static void main(String[] args) {
-		Scanner scan = new Scanner(System.in);
+	Scanner scan = new Scanner(System.in);
     String sort_type = get_sort(scan);
     System.out.println("Generating data files");
     String input_path;
@@ -49,22 +49,33 @@ class sort {
 	public static void bubbleSort(int[] list) {
     int comps = 0;
     int exchanges = 0;
-    for(int i = 0; i < list.length - 1; i++) {
-      for(int j = i + 1; j < list.length; j++) {
-        
-        comps++;
-        if(list[i] > list[j]) {
-          
+
+    for(int i = 1; i != list.length; i++) {
+    	boolean cont = true;
+    	if (cont) {
+    		cont = false;
+      for(int j = 0; j != list.length - i; j++) {
+        if(list[j] > list[j+1]) {
           int temp = list[j];
-          list[j] = list[i];
-          list[i] = temp;
+          list[j] = list[j+1];
+          list[j+1] = temp;
           exchanges++;
+          comps++;
+          cont = true;
         }
       }
+     }
+     else {
+     	break;
+     }
     }
    System.out.println("Comparisons: " + comps 
                          + " Exchanges: " + exchanges + " Sorted array: " + Arrays.toString(list)); 
-  }    
+  }
+  
+  
+  
+      
 
 	public static void insertionSort(int[] a) {
 		int exchanges = 0;
@@ -105,7 +116,7 @@ class sort {
 	}
 		
 	
-	public static File generate_best() throws IOException{
+public static File generate_best() throws IOException{
     File file = new File(String.format("best_case.txt"));
     file.createNewFile();
     FileWriter filenes = new FileWriter(file);
@@ -133,7 +144,7 @@ class sort {
   }
   
   
-  	public static File generate_worst() throws IOException {
+ public static File generate_worst() throws IOException {
     File worst = new File(String.format("worst_case.txt"));
     worst.createNewFile();
     FileWriter writer = new FileWriter(worst);
