@@ -1,0 +1,190 @@
+Test #1
+============
+Jack Condon -- revision of problem 5 6/16
+
+1. public int factorial(int n){
+    if(n==0)
+      return 1;
+    else
+      return (n * factorial(n-1));
+  }
+
+  public int fibonacci(int n)  {
+    if(n == 0)
+        return 0;
+    else if(n == 1)
+      return 1;
+   else
+      return fibonacci(n - 1) + fibonacci(n - 2);
+  }
+
+  Factorial:                          Fibonacci:
+
+
+                  factorial(2)              fib(3)
+                       |                      |
+                      /                     /  \
+              factorial(1)              fib(2)  fib(1)
+                  |                       /  \
+                /                      fib(1) fib(0)
+         factorial(0)
+
+The Factorial function is O(nlogn), as the function is called N times before the solutions are recombined.  The Fibonacci function is O(N^2) as each call
+itself create two calls.
+
+2.
+A. Insertion sort would be appropriate for this situation, since its space complexity is minimal and the fact that the
+array is almost sorted means that it will have O(nk) running time.
+B. Selection Sort, as an O(N^2) algorithm, is not appropriate for this case due to the size
+of the data -- it will almost assuredly be less efficient than insertion sort.
+C. Shell sort could be appropriate: its performance is similar to insertion sort in the best case (O(N)) and it sorts in place.
+D. Quick Sort may be advisable: it's a recursive algorithm and will thus take up a space for the stack.  However,
+of the recursive algorithms (Quick, Radix and Merge), it offers the best space complexity.
+E. Radix Sort would not be advisable due to the many queues needed to store the piles of numbers.
+F. Merge Sort would also not be appropriate due to space considerations.
+
+3. The outer while loop will execute for as many characters there are in the longest word, which in this case
+is 10.
+
+  1: Vanilla Chocolate Peach Caramel Strawberry Cherry
+  2: Peach Caramel Vanilla Strawberry Cherry Chocolate
+  3. Chocolate Peach Vanilla Caramel Strawberry Cherry
+  4. Caramel Peach Strawberry Cherry Chocolate Vanilla
+  5. Strawberry Cherry Vanilla Chocolate Peach Caramel
+  6. Caramel Vanilla Cherry Chocolate Strawberry
+  7. Caramel Vanilla Strawberry Chocolate
+  8. Chocolate Strawberry
+  9. Chocolate Strawberry
+  10. Strawberry
+
+4. Picture in attached file. New element V's Prev link is to itself.
+
+5. A ranked sequence is a collection of items arranged in a linear
+order, where each item has a rank defining the relative ordering of that item in
+the sequence.  Its interface is:
+
+  returnItem (rank)                      Returns the item at the specified rank
+  replaceItem (rank, newItem)            Replaces the item at the specified rank with
+                                                 newItem
+  insertItem (rank, newItem)             Inserts newItem at the specified rank
+  deleteItem (rank)                      Deletes the item at the specified rank
+  size ()                                Returns the size of the sequence
+  empty ()                               Returns true is the sequence is empty
+  traverse ()                            Processes each node in the sequence in
+                                         a specified way
+
+The linked list-based implementation relies on a utility method for traversing a linked list that
+operates in O(n/2) time.  It checks the middle of the list to see where the rank falls and then either
+proceeds from the header through the first half of the list or from the trailer (last item) through list's
+second half.
+
+    nodeAtRank(int rank)
+      node = DLnode;
+      if (rank < Dlist.size()/2) {
+        node = header.getNext()
+        for(i=0; i<rank; i++) {
+        node = node.getNext() }
+        }
+      }
+      else {
+        node = trailer.getPrev()
+         for (int i=0; i < size()-rank-1; i++)
+          node = node.getPrev();    }
+
+      }
+
+The returnItem method in the array-based implementation directly accesses the nth element of the array, and thus
+constant time (O(1)) efficiency.  The returnItem method in the linked list-based implementation searches for the node at
+that rank, which is O(n/2) because it divides the list, then accesses the data at that node, a constant time operation,
+for a total efficiency of O(n/2).
+
+  returnItem(int rank) {        returnItem(int rank) {
+    return array[rank]            node = nodeAtRank(rank)
+  }                              return node.getData()
+                                }
+
+Likewise, the replaceItem() method is a constant time operation in the array-based implementation, as it's a direct
+element access.  The linked list-based method requires traversing the list (n/2) and then setting the data (setData()).
+
+  replaceItem(int rank, int newItem) {          replaceItem(int rank, int newItem) {
+    array[rank] = newItem;                          node = nodeAtRank(rank);
+  }                                                 node.setData(newItem); }
+
+The insertItem method in an array-based implementation must iterate backwards through the array, increasing the rank of each element until it finds the rank
+of the new item. Then it can insert the item at the correct rank. It is thus
+O(n), since the loop running time increases in proportion to the input.  In the linked list-based implementation, it must find the correct node (an O(n/2) operation), insert a new node, set pointers
+to the new node then increment the size of the list. The running time is dominated by searching for the node at that rank and thus the function is O(n/2)
+
+  insertItem(int rank, int newItem) {         insertItem(int rank, int newItem) {
+    for (int i = n - 1; i>rank; i-- {              next = nodeAtRank(rank);
+      array[i+1] = array[i]                        prev = next.getPrev();
+    }                                              node = new DLNode(newItem, next, prev);
+    array[rank] = newItem                          next.setPrev(node);
+  }                                                next.setNext(node);
+                                                   size++;
+                                                  }
+
+The deleteItem method operates similarly to the insertItem method -- it must iterate through the elements in the array to change their place (O(n)) and remove the item
+to be deleted (constant time). In a linked list, it can take advantage of the nodeAtRank method's efficiency and achieve O(n/2).
+
+  deleteItem(int rank) {                deleteItem(int rank) {
+    item = array[rank];                     node = nodeAtRank(rank);
+    for (i=rank; i<n-1; i++) {              next = node.getNext();
+      array[i] = array[i+1];                prev = node.getPrev();
+    }                                       prev.setNext(next);
+    size--;                                 next.setPrev(prev);
+    return item;                            s--;
+  }                                         return node.getData()}
+
+The size() method, for accessing the number of elements in the sequence, is a constant time operation in both implementations
+as it is just accessing an instance variable.  Likewise, the empty() method is a simple (constant time) comparison of the list size:
+
+  empty() {
+    return(size == 0);
+    }
+
+ The traverse() method is always directly proportional to the size of the input O(n).  Here is an example which increments the
+ data at each rank:
+
+    traverse() {                              traverse() {
+      for(i=0; i<array.length; i++){            node = header.getNext();
+        array[i]++;                             while(node != trailer) {
+      }                                              new = node.getData()
+    }                                                node.setData(new++)
+                                                  }
+                                                }
+
+6. A divide-and-conquer search algorithm is an O(logn) method for searching for an element in an
+ordered array.  It compares the element it's searching for to the middle of a list: if the element is larger,
+it calls the same method on the top half of the list.  If the element is smaller, it calls the same method
+on the bottom half of the list.  If the element is equal, the search is done.
+
+            Lo + Hi / 2                       Lo
+
+        rbsearch(3, 0...10)            rbsearch(3, 0...10)
+              |                               |
+              |                               |
+        rbsearch(3, 0...5)              rbsearch(3, 1...10)
+              |                               |
+              |                               |
+        rbsearch(3, 2...4)              rbsearch(3, 2...10)
+
+In an ordered array of 4 million, the function will keep dividing in half until the mid == 0, or 22 times in the worst case. Thus,
+The execution time would be 22 microseconds.
+
+
+7. nlogn
+
+8.
+A. Queue
+B. Ranked or Positional sequence
+C. None of these
+D. Stack
+E. Ranked or Positional Sequence
+F. None of these
+G. None of these
+H. Stack
+I. Ranked or Positional Sequence
+J. Queue
+K. Queue
+l. Stack
