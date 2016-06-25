@@ -22,7 +22,6 @@ class heap{
 		else {
 			success = true;
       size = size + 1;
-			System.out.println("size is " + size + " item is " + Item);
       arr[size] = Item;
       upheap(size);
 		 }
@@ -105,6 +104,21 @@ class sort {
 
 		public static void heapSort(int numbers[]) {
 			int[] myHeap = heapify(numbers);
+			int s = myHeap.length;
+			System.out.println("Is myHeap a heap? " + isminHeap(myHeap, 0, s ));
+		}
+
+		public static boolean isminHeap(int[] arr, int i, int n) {
+			if (i < (n - 2)/2)
+       return true;
+
+	   // If an internal node and is greater than its children, and
+	   // same is recursively true for the children
+	   if (arr[i] <= arr[2*i + 1]  &&  arr[i] <= arr[2*i + 2] &&
+	       isHeap(arr, 2*i + 1, n) && isHeap(arr, 2*i + 2, n))
+	       return true;
+
+	   return false;
 		}
 
 		public static int[] heapify(int[] arr) {
