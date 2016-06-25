@@ -4,41 +4,41 @@ import java.io.*;
 
 public interface LLQueue {
 
-   public void enqueue (int item);
-   public int dequeue();
+   public void enqueue (String item);
+   public String dequeue();
    public int size();
    public boolean empty();
-   public int front();
+   public String front();
 
 }
 
 class Node {
 
-   private int data;
+   private String data;
    private Node next;
 
    public Node () {
-     this(0, null);
+     this("0", null);
    }
 
-   public Node (int d) {
+   public Node (String d) {
      data = d;
    }
-  
-   public Node (int d, Node n) {
+
+   public Node (String d, Node n) {
      data = d;
      next = n;
    }
 
-   public void setData (int newData) {
+   public void setData (String newData) {
      data = newData;
    }
 
    public void setNext (Node newNext) {
      next = newNext;
-   } 
+   }
 
-   public int getData () {
+   public String getData () {
      return data;
    }
 
@@ -67,11 +67,11 @@ class LLQueueADT implements LLQueue {
      return (size == 0);
    }
 
-   public void enqueue (int number) {
+   public void enqueue (String number) {
      Node newNode = new Node ();
      newNode.setData(number);
      newNode.setNext(null);
-     if (this.empty()) 
+     if (this.empty())
        front = newNode;
      else
        rear.setNext(newNode);
@@ -79,8 +79,8 @@ class LLQueueADT implements LLQueue {
      size++;
    }
 
-   public int dequeue () {
-     int i;
+   public String dequeue () {
+     String i;
      i = front.getData();
      front = front.getNext();
      size--;
@@ -89,7 +89,7 @@ class LLQueueADT implements LLQueue {
      return i;
    }
 
-   public int front () {
+   public String front () {
      return front.getData();
    }
 
@@ -98,35 +98,33 @@ class LLQueueADT implements LLQueue {
    }
 }
 
-class LLQueueAppl {
-
-   public static void main (String[] args) throws IOException {
-
-     BufferedReader stdin = new BufferedReader 
-            (new InputStreamReader(System.in));
- 
-     LLQueueADT queue = new LLQueueADT();     
-
-     int i = 2;
-
-     for (int j = 1; j <= 10; j++) {
-       queue.enqueue(i); 
-       System.out.println (queue.front() + " is the front element.");
-       i = i + 2;
-     }
-
-     System.out.println ("The current queue contains " + queue.size() +
-             " elements.");
-
-     while (!queue.empty())     
-        System.out.println (queue.dequeue() + " is dequeued from the queue.");
-    
-     if (queue.empty()) 
-       System.out.println ("The queue is empty.");
-     else 
-       System.out.println ("There are more elements on the queue.");
-
-   }
-}
-
-
+// class LLQueueAppl {
+//
+//    public static void main (String[] args) throws IOException {
+//
+//      BufferedReader stdin = new BufferedReader
+//             (new InputStreamReader(System.in));
+//
+//      LLQueueADT queue = new LLQueueADT();
+//
+//      int i = 2;
+//
+//      for (int j = 1; j <= 10; j++) {
+//        queue.enqueue(i);
+//        System.out.println (queue.front() + " is the front element.");
+//        i = i + 2;
+//      }
+//
+//      System.out.println ("The current queue contains " + queue.size() +
+//              " elements.");
+//
+//      while (!queue.empty())
+//         System.out.println (queue.dequeue() + " is dequeued from the queue.");
+//
+//      if (queue.empty())
+//        System.out.println ("The queue is empty.");
+//      else
+//        System.out.println ("There are more elements on the queue.");
+//
+//    }
+// }

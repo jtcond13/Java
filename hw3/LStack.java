@@ -2,61 +2,61 @@
 
 import java.io.*;
 
-public interface LLStack {
+public interface LStack {
 
-   public void push (String item);
-   public String pop();
+   public void push (int item);
+   public int pop();
    public int size();
    public boolean empty();
-   public String ontop();
+   public int ontop();
 
 }
 
-class Node {
+class lNode {
 
-   private String data;
-   private Node next;
+   private int data;
+   private lNode next;
 
-    public Node () {
-      this("0", null);
+    public lNode () {
+      this(0, null);
     }
 
-   public Node (String d) {
+   public lNode (int d) {
      data = d;
    }
 
-   public Node (String d, Node n) {
+   public lNode (int d, lNode n) {
      data = d;
      next = n;
    }
 
-   public void setData (String newData) {
+   public void setData (int newData) {
      data = newData;
    }
 
-   public void setNext (Node newNext) {
+   public void setNext (lNode newNext) {
      next = newNext;
    }
 
-   public String getData () {
+   public int getData () {
      return data;
    }
 
-   public Node getNext () {
+   public lNode getNext () {
       return next;
    }
 
-   public void displayNode () {
+   public void displaylNode () {
       System.out.print (data);
    }
 }
 
-class LLStackADT implements LLStack {
+class LStackADT implements LStack {
 
-   private Node top;
+   private lNode top;
    private int size;
 
-   public LLStackADT () {
+   public LStackADT () {
      top = null;
      size = 0;
    }
@@ -65,24 +65,24 @@ class LLStackADT implements LLStack {
      return (top == null);
    }
 
-   public void push (String number) {
-     Node newNode = new Node (number);
-    //  newNode.setData(number);
-     newNode.setNext(top);
-     top = newNode;
+   public void push (int number) {
+     lNode newlNode = new lNode (number);
+     newlNode.setData(number);
+     newlNode.setNext(top);
+     top = newlNode;
      size++;
    }
 
-   public String pop () {
-     String i;
+   public int pop () {
+     int i;
      i = top.getData();
      top = top.getNext();
      size--;
      return i;
    }
 
-   public String ontop () {
-     String i = pop();
+   public int ontop () {
+     int i = pop();
      push(i);
      return i;
    }
