@@ -2,6 +2,49 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+class heap{
+	public int size = -1;
+	public boolean full;
+	public int[] arr;
+
+	public heap() {
+		this.arr = new int[2000];
+	}
+	public int[] getHeap() {
+		return arr;
+	}
+
+	public boolean insertItem(int Item){
+		boolean success = false;
+		if (full==true) {
+			success = false;
+		}
+		else {
+			success = true;
+      size = size + 1;
+			System.out.println("size is " + size + " item is " + Item);
+      arr[size] = Item;
+      upheap(size);
+		 }
+   return success;
+	}
+
+	public void upheap(int Item) {
+		int l = Item;
+    int key = arr[l];
+    int k = l/2;
+    while (k >= 1 && arr[k] < key) {
+         arr[l] = arr[k];
+         l = k;
+         k = l/2;
+    }
+    arr[l] = key;
+	}
+
+}
+
+
+
 
 class sort {
 	private static int mergeComps;
@@ -48,14 +91,34 @@ class sort {
 		else if (sort_type.equals("D")){
 			shellSort(numbers);
 		}
-		else {
+		else if (sort_type.equals("E")){
 			mergeComps = 0;
 			mergeSwaps = 0;
 			mergeSort(numbers);
 			System.out.println("Sorted Array" + Arrays.toString(numbers));
 			System.out.println("Swaps: " + mergeSwaps + "Comps: " + mergeComps);
 		}
+		else {
+			heapSort(numbers);
+		}
 	}
+
+		public static void heapSort(int numbers[]) {
+			int[] myHeap = heapify(numbers);
+		}
+
+		public static int[] heapify(int[] arr) {
+			heap me = new heap();
+			int[] end;
+			int arg;
+			for(int i=0; i<arr.length-1;i++){
+				arg = arr[i];
+				me.insertItem(arg);
+			}
+			end = me.getHeap();
+			System.out.println("heap is" + Arrays.toString(end));
+			return end;
+		}
 
 		public static void mergeSort(int arr[]) {
 			int[] tmp = new int[arr.length];
@@ -252,7 +315,7 @@ class sort {
 
 
   public static String get_sort(Scanner scan) {
-    System.out.println("Please press A for insertion sort, B for bubble sort, C for selection sort, D for shell sort or E for merge sort." );
+    System.out.println("Please press A for insertion sort, B for bubble sort, C for selection sort, D for shell sort, E for merge sort or F for heap sort." );
     String method = scan.nextLine();
     String n = method.toUpperCase();
     return n;
