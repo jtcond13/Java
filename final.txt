@@ -1,0 +1,209 @@
+
+
+1. Insertion sort splits the array into two sub-arrays, a sorted array (with initially one elements) and the remaining elements to be sorted.
+It gradually adds items from the second sub-array to the first sub-array until all are passed to the first subarray.
+The loop works by iterating backwards through the sorted subarray, moving all elements up one position until an item in the array
+is less than the item being inserted, at which point the new item is inserted into the sorted subarray.  This is O(n^2) with respect
+to running time (unless the data is already sorted-- then there is only one comparison for each item), but better with respect to space O(1).  Python:
+
+def insertionSort(alist):
+   for index in range(1,len(alist)):
+
+     currentvalue = alist[index]
+     position = index
+
+     while position>0 and alist[position-1]>currentvalue:
+         alist[position]=alist[position-1]
+         position = position-1
+
+     alist[position]=currentvalue
+
+Radix sort works by disassembling all elements into ten groups, according to the element in the ones digit (0-9), then combining each of the groups according to their order.
+You then repeat the process for each digit.  Radix sort has the advantage of not having comparisons, but it requires a lot of space
+for storing all of the queues which hold the digits.  If the outer while loop, which executes for each digit, executes C times, and the inner loops (which create the sublists)
+execute C times, the total efficiency is O(CN).  However, if the input contains unique values, the efficiency is O(NlogN).
+
+Merge sort is a recursive, divide-and-conquer sorting algorithm which divides the input array into ever-smaller lists by halving them until there are N lists of the length one.
+Then these lists are merged until an N-length array is created.  MergeSort runs in O(nlogn) time for both comparisons and swaps, although comparisons are always somewhat lower
+than swaps.  The maximum number of comparisons in each merge is one less than the number (N) of items being merged and the minimum number is N/2. Merge sort is very space inefficient in order to
+store the call stack.
+
+2.  A Queue is a LIFO data structure, in which items are added to the back and removed from the front.  The Queue contains constant-time methods for accessing the
+size(), front() (also called peekFront() in some implementations) and empty() methods, which describe the data structure.
+
+The array-based implementation keeps track of the front and last indices of the array:
+the enqueue() (adding an element) method increments the size variable and then inserts the new item at the rear index of the array.  The dequeue() method accesses the variable at
+ the front of the array (an instance variable) and then increments the front index. The empty() and size() methods use the front and last indices to return whether the array is empty and how large
+ it is.  As all of these are direct array accesses or comparisons, their efficiency is constant time.
+
+ The linked-list based implementation of the Queue stores each element as an instance of a node class, each of which maintains a pointer to the elements
+ preceding and succeeding it.  The queue then maintains pointers to the first and last elements of this list.  One difference with the array-based implementation
+ is that the Queue must maintain an instance variable which tracks the size as it can't do arithmetic to determine it at any point.  The enqueue() operation creates a new
+ Node instance with the new data, sets the next pointer to null, links the previous rear node to the new node, sets the rear to the new node and increments the size of the queue.
+ The dequeue() operation removes the data from the node stored at the rear pointer, sets the front pointer to the next list element (using the node's getNext() method) and decrements
+ the size of the Queue.
+
+ A priority queue is a queue in which items are ordered using a key, with the lowest key always appearing at the front.  In the array-based implementation, the queue does not keep track of
+ first and rear elements, as the first is always at index 0 and last at length-1.  Insertion runs at O(n), as items have to be shifted in the array to accommodate the new data item.
+ one.  RemoveItem() is considerably more efficient, as it can simply take the element to be dequeued with an array access.
+
+ 3.  A binary tree is a tree (i.e. a set of nodes connected by edges, with a clear root) that has, at most, two children.  A specific type of this
+ is the binary search tree, where a node's left child must have a value less than its parent, and a node's right child a value greater. It has operations
+ find(), insert(), delete(), getSuccessor(), traverse(), preOrder(), inOrder() and postOrder().  Finding a node can be done in O(logn) as each node to be traversed
+ is compared and the directed down the left or right side of the tree, depending on the results of the comparison. Insert() and Delete() take advantage of the same method to achieve
+ O(logn) efficiency, although they must reset the pointers to the correct parent and child nodes after completing their operations.
+
+ Trees can be represented as linked lists, with pointers in the Node class pointing to the children of each node.  They can also be represented as an array,
+ with each index representing a place in the tree (0 as root, left child as 2*index+1, right child as 2*index +2, parent as (index-1)/2).  2-3 and 2-3-4 trees, which
+ allow additional data items per node and have all leaf nodes on the same level, improve search by having fewer levels on which to search.
+
+4.  A heap is a complete binary tree (a binary tree in which every level, except possibly the last, is completely filled, and all nodes are as far left as possible),
+in which any node is greater than or equal to the nodes in its subtrees (the ordering and shape properties).  It is an implementation of a priority queue.
+The number of levels in a heap (height) is log(n) + 1 of the number of nodes.  Heaps are implemented using arrays, in which each index represents a
+place on the array.  Operations usually involve inserting/deleting items, then iterating forwards/backwards (upheap/downheap) in order to restore
+the heap property.  When insertItem() is called on a heap, the item is added to the end of the array, then the algorithm calls upHeap() on the array in order to
+determine whether it's greater than any of its greater than any of its parent elements.  If it is, then it is swapped.  deleteItem() removes the element at the correct index, then
+walks down the heap (downHeap()), restoring the heap property to child nodes.
+
+5. A ranked sequence is a collection of items arranged in a linear order, where each item has a rank defining the relative ordering of that item in
+the sequence.
+
+
+Operations (methods) on ranked sequences:
+
+returnItem (rank)                      Returns the item at the specified rank
+replaceItem (rank, newItem)    Replaces the item at the specified rank with
+                                                 newItem
+insertItem (rank, newItem)       Inserts newItem at the specified rank
+deleteItem (rank)                      Deletes the item at the specified rank
+size ()                                       Returns the size of the sequence
+empty ()                                    Returns true is the sequence is empty
+traverse ()                                 Processes each node in the sequence in
+                                                 a specified way
+
+
+
+6.  A dictionary is an ordered or unordered list of key-element pairs, where keys are used to locate elements in the list.
+All dictionaries have the following operations:
+
+size ()                                      Returns the size of the dictionary
+empty ()                                     Returns true is the dictionary is empty
+findItem (key)                              Locates the item with the given key.
+                                            than one item with the given key exists, an arbitrary item is returned.
+findAllItems (key)                         Locates all items with the given key. .
+removeItem (key)                           Removes the item with the given key
+removeAllItems (key)                       Removes all items with the given key
+insertItem (key, element)                  Inserts a new key-element pair
+
+Ordered dictionaries also contain:
+
+closestKeyBefore (key)           Returns the key of the item with largest key
+                                  less than or equal to given key
+closestElemBefore (key)          Returns the element for the item with largest
+                                  key less than or equal to given key
+closestKeyAfter (key)            Returns the key of the item with smallest
+                                  key greater than or equal to given key
+closestElemAfter (key)            Returns the element for the item with smallest
+                                   key greater than or equal to given key
+
+These methods allow new elements to be inserted at the correct places.  An unordered dictionary is best implemented as a hash table, with
+findItem(), insertItem(), removeAllItems() and removeItem() having worst case running time of O(n/N), where n is the number of elements in the dictionary
+and N is the number of hash buckets.  If there are no hash collisions, these become constant time (O(1)) operations.  An ordered dictionary is best
+implemented as a binary search tree, providing O(logn) efficiency for insertItem(), removeItem(), removeAllItems() and findItem().  The size() and empty() methods
+are constant time operations, simply accessing a class variable.
+
+7.  Heap sort builds a heap with the input elements and then removes them in the space newly opened up, restoring the heap property as it goes.  Quick sort is a divide and conquer
+sorting algorithm which choose a pivot point, assigns elements to the first or second half in comparison to the pivot (partitioning), then
+recursively applies the method to each part of the list.  The partitioning method rearranges the array such that all elements less than the pivot go to the left side of the array,
+while all elements greater than go to the right side.
+
+Both of these algorithms are in-place sorts (don't require additional space).
+Heap sort has an overall efficiency of O(1.5logn) while QuickSort is usually O(nlogn) unless a bad pivot is chosen and the data is already sorted,
+in which case it can have O(n^2) running time.
+
+  Heapsort(A[n], precedes)                    QuickSort(A, lo, hi)
+        int y := n / 2                            if (lo < hi) {
+    while (y > 0) {                                 p = partition(A, lo, hi)
+         downheap (A[n], y, precedes)               QuickSort(A, lo, p-1)
+         y :=  y - 1                                QuickSort(A, p+1, hi)
+     }
+    y := n
+    while (y > 1) {
+        temp := A[1],    A[1] := A[y],
+        A[y] := temp,    y := y - 1
+        downheap(A[y], 1, precedes)
+    }
+
+8.
+
+9. A graph, G, is a data structure comprised by two sets of objects, nodes and edges, where nodes store data and edges indicate relationships
+between the data stored in the nodes.  A graph in which there is an edge for every possible connection of nodes is a "complete graph."  It is often described using an adjacency matrix or adjacency list,
+which describe the set of edges connecting each node.
+
+addEdge(v1, v2)       Returns G with new edge v1v2 added
+removeEdge(v1, v2) Returns G with edge v1v2 removed
+edge(v1, v2)              Returns true if there is an edge between v1 and v2
+vertices()                   Returns an enumeration all vertices in G
+edges()                       Returns an enumeration of all edges in G
+numVertices()            Returns the number of vertices in G
+numEdges()               Returns the number of edges in G
+degree(v)                    Returns the degree of v
+adjacentVertices(v)    Returns an enumeration of the vertices adjacent to v
+incidentEdges(v)        Returns an enumeration of edges incident to v
+
+Depth-first search sets up a stack for visited nodes and then attempts to traverse all of the adjacent nodes to the starting point, pushing
+each to the stack, until it can't find another one to traverse.  Then, it pops the most recently visited one off the stack and attempts to traverse all of the nodes adjacent
+to that vertex. The algorithm repeats until the stack is empty. Breadth-first traversal operates with a queue; it begins by visiting the next adjacent vertex, enqueuing it, and
+repeating this action until there is no adjacent vertex.  If that is the case, then it removes the vertex from the queue and makes it the current vertex and attempts the algorithm again.
+
+An ordered graph has directions to the edges, so each connection appears only once in the adjacency matrix and, in traversing it, there is only
+one direction you can travel.
+
+10.  A weighted graph is a graph in which each vertex has a magnitude associated with it.
+
+Additional operations (methods) on weighted graphs:
+
+addEdge(v1, v2, weight)        Returns G with new edge v1v2 added
+removeEdge(v1, v2, weight) Returns G with edge v1v2 removed
+edgeWeight(v1, v2)                Returns the weight of edge v1v2
+
+A minimum spanning tree of a weighted graph is a collection of
+edges connecting all of the vertices such that the sum of the weights of the
+edges is at least as small as the sum of the weights of any other collection of
+edges connecting all of the vertices.
+
+Prim's algorithm begins by visiting an arbitrary node.  Then it connects to the
+unvisited node with the lowest edge weight.  It continues doing this (connecting to the unvisited nodes with the lowest edge weight)
+until all nodes have been visited. The operation winds up being similar to depth-first search, except that edge weights must be gathered
+in order to calculate the minimum spanning tree.
+
+Pseudocode:
+Algorithm MST (start, T)
+
+Included[start] = true                            // Assume Boolean array Included tells,
+
+for (node = 2) to NumberOfNodes       // which vertices are already in the MST.
+     Included[node] = false
+
+for (node = 1) to (NumberOf Nodes - 1)  {
+     edge = FindMinEdge ()                      // Requires a loop over all of the nodes.
+     Included[edge.IncidentNode()] = true
+     AddEdge(edge, MST) }
+
+
+Efficiency is O(n^2).
+
+Kruskal's algorithm starts by sorting the edges by weight, adding each to a queue.  Then it dequeues them
+according to their weights, adding each to the MST if they haven't been added yet.
+
+Kruskal's algorithm:
+sort the edges of G in increasing order by length
+keep a subgraph S of G, initially empty
+for each edge e in sorted order
+    if the endpoints of e are disconnected in S
+    add e to S
+return S
+
+A minimum spanning tree can not contain a cycle.
+
+11.  The shortest path problem seeks to find a path from one node to another, seeking the shortest path.

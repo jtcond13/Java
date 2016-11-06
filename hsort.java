@@ -2,86 +2,10 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-class heap{
-	public int size = -1;
-	public boolean full;
-	public int[] arr;
-
-	public heap() {
-		this.arr = new int[2000];
-	}
-
-	public int[] getHeap() {
-		return this.arr;
-	}
-
-	public boolean insertItem(int Item){
-		boolean success = false;
-		if (full==true) {
-			success = false;
-		}
-		else {
-			success = true;
-      size = size + 1;
-      arr[size] = Item;
-      upheap(size);
-		 }
-   return success;
-	}
-
-	public void upheap(int Item) {
-		int l = Item;
-    int key = arr[l];
-    int k = l/2;
-    while (k >= 1 && arr[k] < key) {
-         arr[l] = arr[k];
-         l = k;
-         k = l/2;
-    }
-    arr[l] = key;
-	}
-
-	public void hSort() {
-		int y = (arr.length-1)/2;
-		int temp;
-		while(y>0){
-			downheap(y);
-			y--;
-		}
-		y = arr.length-1;
-		while(y > 1){
-			temp = arr[0];
-			arr[0] = arr[y];
-			arr[y] = temp;
-			y--;
-			downheap(1);
-		}
-	}
-
-	public void downheap(int j) {
-		boolean foundSpot = false;
-    int l = j;
-    int key = arr[l];
-    int k = (2 * l) + 1;
-    while (k <= arr.length-1 && !(foundSpot)) {
-        if (k < arr.length-1 && !(arr[k+1]<arr[k])) {
-             k = k + 1;}
-        if (!(arr[k]< key)) {
-             arr[l] = arr[k];
-						 l = k;
-						 k = (2 * l)+1;
-					 }
-        else  foundSpot = true;
-			        }
-    arr[l] = key;
-	}
-
-}
 
 
 
-
-class sort {
+class hsort {
 	private static int mergeComps;
 	private static int mergeSwaps;
 	public static void main(String[] args) {
@@ -138,39 +62,20 @@ class sort {
 		}
 	}
 
-		public static void heapSort(int numbers[]) {
-			int[] myHeap = heapify(numbers);
-			int s = myHeap.length;
-			System.out.println("Is myHeap a heap? " + isHeap(myHeap, 0, s-1));
-			heap temp = new heap();
-			temp.arr = myHeap;
-			temp.hSort();
-			System.out.println("Sorted heap: " + Arrays.toString(temp.arr));
-		}
-
-		public static boolean isHeap(int[] arr, int i, int n) {
-			if (i < (n - 2)/2)
-       return true;
-
-	   if (arr[i] >= arr[2*i + 1]  &&  arr[i] >= arr[2*i + 2] &&
-	       isHeap(arr, 2*i + 1, n) && isHeap(arr, 2*i + 2, n))
-	       return true;
-
-	   return false;
-		}
-
-		public static int[] heapify(int[] arr) {
-			heap me = new heap();
-			int[] end;
-			int arg;
-			for(int i=0; i<arr.length;i++){
-				arg = arr[i];
-				me.insertItem(arg);
+		public static void heapSort(int nums[]) {
+			Heap myHeap = new Heap(nums.length-1);
+			for(int i=0;i<nums.length-1;i++) {
+				myHeap.insert(nums[i]);
 			}
-			me.downheap(0);
-			end = me.getHeap();
-			System.out.println("heap is" + Arrays.toString(end));
-			return end;
+			myHeap.displayHeap();
+			for(int j=myHeap.currentSize-1; j>=0; j--)
+       {
+         Node biggestNode = myHeap.remove();
+         myHeap.insertAt(j, biggestNode);
+      }
+			myHeap.displayHeap();
+			System.out.println("Swaps: " + myHeap.heapSwaps);
+			System.out.println("Comps: " + myHeap.heapComps);
 		}
 
 		public static void mergeSort(int arr[]) {
@@ -374,4 +279,124 @@ class sort {
     return n;
   }
 
+}
+
+
+class Node
+   {
+   private int iData;
+   public Node(int key)
+      { iData = key; }
+   public int getKey()
+      { return iData; }
+   public void setKey(int id)
+      { iData = id; }
+   }
+class Heap
+   {
+	 public Node[] heapArray;
+   private int maxSize;
+	 public int currentSize;
+	 public int heapSwaps;
+	 public int heapComps;
+
+public Heap(int mx)
+	 {
+	 maxSize = mx;
+	 currentSize = 0;
+	 heapSwaps = 0;
+	 heapComps = 0;
+	 heapArray = new Node[maxSize];
+	 }
+
+public boolean isEmpty()
+	 { return currentSize==0; }
+public boolean insert(int key)
+	 {
+	 if(currentSize==maxSize)
+			return false;
+	 Node newNode = new Node(key);
+	 heapArray[currentSize] = newNode;
+	 upHeap(currentSize++);
+	 return true;
+	 }
+public void upHeap(int index)
+	 {
+	 int parent = (index-1) / 2;
+	 Node bottom = heapArray[index];
+
+	 while( index > 0 &&
+					heapArray[parent].getKey() < bottom.getKey() )
+			{
+			heapArray[index] = heapArray[parent];  // move it down
+			index = parent;
+			parent = (parent-1) / 2;
+			}
+	 heapArray[index] = bottom;
+	 }
+
+// public void heapify(int index, int length){
+// 	if(index > length/2-1){
+// 		return;
+// 	}
+// 	heapify(index*2+2);
+// 	heapify(index*2+1);
+// 	downHeap(index);
+// }
+public Node remove()
+	 {
+	 Node root = heapArray[0];
+	 heapArray[0] = heapArray[--currentSize];
+	 downHeap(0);
+	 return root;
+	 }
+public void downHeap(int index)
+	 {
+	 int largerChild;
+	 Node top = heapArray[index];
+	 while(index < currentSize/2)
+			{
+			int leftChild = 2*index+1;
+			int rightChild = leftChild+1;
+			heapComps++;																// find larger child
+			if(rightChild < currentSize &&  // (rightChild exists?)
+													heapArray[leftChild].getKey() <
+													heapArray[rightChild].getKey())
+				 largerChild = rightChild;
+			else
+				 largerChild = leftChild;
+
+																			// top >= largerChild?
+			if( top.getKey() >= heapArray[largerChild].getKey() )
+				 break;
+																			// shift child up
+			heapArray[index] = heapArray[largerChild];
+			heapSwaps++;
+			index = largerChild;            // go down
+			}
+	 heapArray[index] = top;            // root to index
+	 heapSwaps++;
+	 }
+public boolean change(int index, int newValue)
+	 {
+	 if(index<0 || index>=currentSize)
+			return false;
+	 int oldValue = heapArray[index].getKey();
+	 heapArray[index].setKey(newValue);
+
+	 if(oldValue < newValue)
+			upHeap(index);
+	 else
+			downHeap(index);
+	 return true;
+	 }
+	 public void displayHeap()
+				{
+       for(int j=0; j<maxSize; j++)
+          System.out.print(heapArray[j].getKey() + " ");
+       System.out.println("");
+
+       }
+		public void insertAt(int index, Node newNode)
+			   { heapArray[index] = newNode; }
 }
